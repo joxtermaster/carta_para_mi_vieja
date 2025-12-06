@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre de Cumpleaños</title>
+  <!-- Fuente elegante desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Great Vibes', cursive;
+      overflow: hidden;
+    }
+
+    /* SOBRE */
+    .sobre {
+      position: relative;
+      width: 500px;
+      height: 300px;
+      background: #f5deb3;
+      border: 3px solid #d2b48c;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      transition: transform 1s ease, opacity 1s ease;
+      overflow: hidden;
+    }
+
+    /* Solapa superior */
+    .solapa-superior {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 250px solid transparent;
+      border-right: 250px solid transparent;
+      border-bottom: 150px solid #d2b48c;
+      transform-origin: top;
+      transition: transform 1s ease;
+      z-index: 2;
+    }
+
+    /* Solapa inferior */
+    .solapa-inferior {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 250px solid transparent;
+      border-right: 250px solid transparent;
+      border-top: 150px solid #d2b48c;
+      z-index: 1;
+    }
+
+    /* Corazón como sello */
+    .sello {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 70px;
+      color: crimson;
+      cursor: pointer;
+      z-index: 3;
+      transition: transform 0.3s ease;
+    }
+
+    .sello:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Carta interior */
+    .carta {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      background: #fffbe6;
+      padding: 50px;
+      border-radius: 12px;
+      font-size: 2.5em; /* más grande */
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255,255,255,0.5);
+      opacity: 0;
+      transition: all 1s ease;
+      z-index: 1;
+      border: 2px solid #d2b48c;
+      color: #b22222;
+    }
+
+    /* Animaciones */
+    .caer {
+      transform: translateY(350px) rotate(10deg);
+      opacity: 0;
+    }
+
+    .abrir .solapa-superior {
+      transform: rotateX(180deg); /* solapa superior se abre */
+    }
+
+    .abrir .carta {
+      top: 20%;
+      opacity: 1;
+    }
+
+    /* corazones flotando */
+    .floating-heart {
+      position: absolute;
+      font-size: 60px; /* más grandes */
+      animation: floatUp 5s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) scale(1); opacity: 1; }
+      to { transform: translateY(-400px) scale(2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sobre" id="sobre">
+    <div class="solapa-superior"></div>
+    <div class="solapa-inferior"></div>
+    <div class="sello" id="sello">❤️</div>
+    <div class="carta" id="carta">¡Feliz cumpleaños mi vieja hermosa!</div>
+  </div>
+
+  <script>
+    const sello = document.getElementById('sello');
+    const sobre = document.getElementById('sobre');
+    const carta = document.getElementById('carta');
+
+    // colores variados para los corazones
+    const colores = ["crimson", "hotpink", "gold", "deeppink", "red"];
+
+    function crearCorazon() {
+      const heart = document.createElement('span');
+      heart.classList.add('floating-heart');
+      heart.innerText = '❤️';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.top = (window.innerHeight - 100) + 'px';
+      heart.style.color = colores[Math.floor(Math.random() * colores.length)];
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    sello.addEventListener('click', () => {
+      // el sobre y el sello caen juntos
+      sobre.classList.add('caer');
+
+      sello.style.display="none";
+      let interval = setInterval(crearCorazon, 80); // más corazones
+
+      setTimeout(() => {
+        // luego aparece la carta y se abre la solapa
+        sobre.classList.remove('caer');
+        sobre.classList.add('abrir');
+        clearInterval(interval);
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
